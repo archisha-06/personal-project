@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Confession Space</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .typewriter-container {
+      width: 90%;
+      max-width: 700px;
+      margin-bottom: 40px;
+    }
+
+    .typewriter-line {
+      font-size: 1.5rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    .line1 {
+      animation-delay: 0s;
+    }
+
+    .line2 {
+      animation-delay: 1.5s;
+    }
+
+    .line3 {
+      animation-delay: 3s;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    textarea {
+      width: 80%;
+      max-width: 600px;
+      height: 150px;
+      padding: 15px;
+      font-size: 1rem;
+      background-color: #111;
+      color: #fff;
+      border: 2px solid #444;
+      border-radius: 8px;
+      resize: none;
+      outline: none;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #666;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="typewriter-container">
+    <div class="typewriter-line line1">there's a lot of things</div>
+    <div class="typewriter-line line2">that we can't share with the world</div>
+    <div class="typewriter-line line3">but you can share it with me</div>
+  </div>
+
+  <form action="thankyou.html" method="GET" onsubmit="return submitConfession()">
+    <textarea id="confession" name="confession" placeholder="Write your confession here..."></textarea>
+    <button type="submit">Leave your note</button>
+  </form>
+
+  <script>
+    function submitConfession() {
+      const text = document.getElementById('confession').value.trim();
+      if (text === "") {
+        alert("Please write something before submitting.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+
+</body>
+</html>

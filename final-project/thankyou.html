@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Confession in the Stars</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    #overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      
+      border-radius: 10px;
+      text-align: center;
+      max-width: 500px;
+      font-size: 1.2rem;
+      z-index: 10;
+      pointer-events: none;
+    }
+    #startAgain {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid #aaa;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  text-decoration: none;
+  z-index: 1000;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#startAgain:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <a href="index.html" id="startAgain">Start Again</a>
+
+
+<div id="overlay"></div>
+
+<script type="module">
+  import * as THREE from 'https://esm.sh/three@0.155.0';
+  import { OrbitControls } from 'https://esm.sh/three@0.155.0/examples/jsm/controls/OrbitControls';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const confession = urlParams.get('confession') || "No confession found.";
+  document.getElementById("overlay").innerText = confession;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  camera.position.z = 50;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.enablePan = false;
+
+  const confessions = [
+    "I miss them every day.",
+    "I’m scared of my future.",
+    "Sometimes I pretend to be okay.",
+    "I lied to protect them.",
+    "I’m still healing.",
+    "I want to disappear for a while.",
+    "I wish I said yes.",
+    "I regret staying quiet.",
+    "I’m afraid of who I’m becoming.",
+    "I still dream about that night.",
+    "I miss them every day.",
+    "I’m scared of my future.",
+    "Sometimes I pretend to be okay.",
+    "I lied to protect them.",
+    "I’m still healing.",
+    "I want to disappear for a while.",
+    "I wish I said yes.",
+    "I regret staying quiet.",
+    "I’m afraid of who I’m becoming.",
+    "I still dream about that night.",
+    "I miss them every day.",
+    "I’m scared of my future.",
+    "Sometimes I pretend to be okay.",
+    "I lied to protect them.",
+    "I’m still healing.",
+    "I want to disappear for a while.",
+    "I wish I said yes.",
+    "I regret staying quiet.",
+    "I’m afraid of who I’m becoming.",
+    "I still dream about that night."
+  ];
+
+  function createTextSprite(message) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = '24px Courier New';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.fillText(message, canvas.width / 2, canvas.height / 2 + 8);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+    const sprite = new THREE.Sprite(material);
+    sprite.scale.set(20, 5, 1);
+    return sprite;
+  }
+
+  confessions.forEach((text) => {
+    const sprite = createTextSprite(text);
+    sprite.position.set(
+      (Math.random() - 0.5) * 200,
+      (Math.random() - 0.5) * 200,
+      (Math.random() - 0.5) * 200
+    );
+    scene.add(sprite);
+  });
+
+  const starsGeometry = new THREE.BufferGeometry();
+  const starPositions = [];
+
+  for (let i = 0; i < 1000; i++) {
+    starPositions.push((Math.random() - 0.5) * 500);
+    starPositions.push((Math.random() - 0.5) * 500);
+    starPositions.push((Math.random() - 0.5) * 500);
+  }
+
+  starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+  const starsMaterial = new THREE.PointsMaterial({ color: 0x888888, size: 1 });
+  const stars = new THREE.Points(starsGeometry, starsMaterial);
+  scene.add(stars);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+</body>
+</html>
